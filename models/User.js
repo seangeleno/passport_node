@@ -17,3 +17,15 @@ var userSchema = new Schema({
 ,   email: String
   }
 })
+userSchema.methods.generatehash = function(password){
+  return bcrypt.hashSynch(password, bcrypt.genSaltSync(12), null)
+  //spits out jumbled line that we can store in mongodb
+}
+
+userSchema.methods.validPassword = function(password){
+  return bcrypt.compareSynch(password, this.local.password)
+}
+
+var User = mongoose.model('User', userSchema)
+
+module.exports = User
